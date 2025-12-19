@@ -1,4 +1,3 @@
-package assignments.Ex2;
 import java.io.Serializable;
 /**
  * This class represents a 2D map (int[w][h]) as a "screen" or a raster matrix or maze over integers.
@@ -8,8 +7,6 @@ import java.io.Serializable;
  *
  */
 public class Map implements Map2D, Serializable{
-
-    // edit this class below
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
 	 * @param w
