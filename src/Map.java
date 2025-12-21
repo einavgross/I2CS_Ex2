@@ -7,13 +7,15 @@ import java.io.Serializable;
  *
  */
 public class Map implements Map2D, Serializable{
+    private int [][] _map;
 	/**
 	 * Constructs a w*h 2D raster map with an init value v.
 	 * @param w
 	 * @param h
 	 * @param v
 	 */
-	public Map(int w, int h, int v) {init(w, h, v);}
+	public Map(int w, int h, int v) {
+        init(w, h, v);}
 	/**
 	 * Constructs a square map (size*size).
 	 * @param size
@@ -29,62 +31,76 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override
 	public void init(int w, int h, int v) {
-
-	}
+        _map = new int[w][h];
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                _map[i][j] = v;
+            }
+        }
+    }
 	@Override
 	public void init(int[][] arr) {
-
+        if (arr != null) {
+            int w = arr.length;
+            int h = arr[0].length;
+            for (int i = 0; i < w; i++) {
+                for (int j = 0; j < h; j++) {
+                    _map[i][j] = arr[i][j];
+                }
+            }
+        }
 	}
 	@Override
-	public int[][] getMap() {
-		int[][] ans = null;
-
-		return ans;
+	public int[][] getMap() {;
+		return _map;
 	}
 	@Override
 	public int getWidth() {
-        int ans = -1;
-
-        return ans;
+        return _map.length;
     }
 	@Override
 	public int getHeight() {
-        int ans = -1;
-
-        return ans;
+        return _map[0].length;
     }
 	@Override
 	public int getPixel(int x, int y) {
-        int ans = -1;
-
-        return ans;
+        return _map[x][y];
     }
 	@Override
 	public int getPixel(Pixel2D p) {
-        int ans = -1;
-
-        return ans;
+        return _map[p.getX()][p.getY()];
 	}
 	@Override
 	public void setPixel(int x, int y, int v) {
-
+        _map[x][y] = v;
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
-
+        _map[p.getX()][p.getY()] = v;
 	}
 
     @Override
     public boolean isInside(Pixel2D p) {
-        boolean ans = true;
-
+        boolean ans = false;
+        if (p != null) {
+            int x = p.getX();
+            int y = p.getY();
+            if (x>=0 && x < getWidth() && y>=0 && y < getHeight()) {
+                ans = true;
+            }
+        }
         return ans;
     }
 
     @Override
     public boolean sameDimensions(Map2D p) {
         boolean ans = false;
-
+        if (p != null) {
+            int pWidth = p.getWidth();
+            int pHeight = p.getHeight();
+            if(pWidth==getWidth() && pHeight==getHeight()) {
+                ans=true;}
+        }
         return ans;
     }
 
