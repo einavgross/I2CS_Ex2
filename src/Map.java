@@ -20,7 +20,9 @@ public class Map implements Map2D, Serializable{
 	 * Constructs a square map (size*size).
 	 * @param size
 	 */
-	public Map(int size) {this(size,size, 0);}
+	public Map(int size) {
+        this(size,size, 0);
+    }
 	
 	/**
 	 * Constructs a map from a given 2D array.
@@ -43,13 +45,14 @@ public class Map implements Map2D, Serializable{
         if (arr != null) {
             int w = arr.length;
             int h = arr[0].length;
-            for (int i = 0; i < w; i++) {
-                for (int j = 0; j < h; j++) {
-                    _map[i][j] = arr[i][j];
+            _map = new int[w][h];
+                for (int i = 0; i < w; i++) {
+                    for (int j = 0; j < h; j++) {
+                        _map[i][j] = arr[i][j];
+                    }
                 }
             }
         }
-	}
 	@Override
 	public int[][] getMap() {;
 		return _map;

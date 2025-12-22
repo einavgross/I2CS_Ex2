@@ -9,7 +9,7 @@ public class Index2DTest {
     @Test
     public void getXTest() {
         Index2D index2D = new Index2D(-54,43);
-        assertEquals(index2D.getX(), -54);
+        assertEquals(-54, index2D.getX());
     }
     /**
      * tests getY() function - return the h value of Index2D
@@ -17,7 +17,7 @@ public class Index2DTest {
     @Test
     public void getYTest() {
         Index2D index2D = new Index2D(33,-4);
-        assertEquals(index2D.getY(), -4);
+        assertEquals(-4, index2D.getY());
     }
 
     /**
