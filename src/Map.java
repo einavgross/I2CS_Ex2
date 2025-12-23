@@ -109,32 +109,93 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void addMap2D(Map2D p) {
-
+        if (sameDimensions(p)) {
+            for (int i=0; i<getWidth(); i++) {
+                for (int j=0; j<getHeight(); j++) {
+                    _map[i][j]+=p.getPixel(i,j);
+                }
+            }
+        }
     }
 
     @Override
     public void mul(double scalar) {
-
+        for (int i=0; i<getWidth(); i++) {
+            for (int j=0; j<getHeight(); j++) {
+                _map[i][j]*=(int)scalar;
+            }
+        }
     }
 
     @Override
     public void rescale(double sx, double sy) {
-
+        int [][] res = new int [(int)(getWidth()*sx)][(int)(getHeight()*sy)];
+        for (int i=0; i<res.length; i++) {
+            for (int j=0; j<res[0].length; j++) {
+                res[i][j] = _map[i/(int)sx][j/(int)sy];
+            }
+        }
+        init(res);
     }
+
+
 
     @Override
     public void drawCircle(Pixel2D center, double rad, int color) {
-
+        int minX = Math.max(0,(int)(center.getX()-rad));
+        int maxX = Math.max(getWidth()-1,(int)(center.getX()+rad));
+        int minY = (int)(center.getY()-rad);
+        int maxY = (int)(center.getY()+rad);
+        for (int i=minX; i<maxX; i++) {
+            for (int j=minY; j<maxY; j++) {
+                Pixel2D p = new Index2D(i,j);
+                if (center.distance2D(p)<=rad) {
+                    setPixel(i,j,color);
+                }
+            }
+        }
     }
 
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
+        int dx = Math.abs(p2.getX() - p1.getX());
+        int dy = Math.abs(p2.getY() - p1.getY());
 
+        if (dx >= dy) { // קו שוכב
+            if (p2.getX() < p1.getX()) {
+                drawLine(p2, p1, color);
+                return;
+            }
+            double m = (double)(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            for (int i = p1.getX(); i <= p2.getX(); i++) {
+                double y = p1.getY() + m * (i - p1.getX());
+                setPixel(i, (int) Math.round(y), color);
+            }
+        }
+        if (dy>dx){ // קו עומד
+            if (p2.getY() < p1.getY()) {
+                drawLine(p2, p1, color);
+                return;
+            }
+            double m2 = (double)(p2.getX() - p1.getX()) / (p2.getY() - p1.getY());
+            for (int i = p1.getY(); i <= p2.getY(); i++) {
+                double x = p1.getX() + m2 * (i - p1.getY());
+                setPixel((int) Math.round(x), i, color);
+            }
+        }
     }
 
     @Override
     public void drawRect(Pixel2D p1, Pixel2D p2, int color) {
-
+        int minX = Math.min(p1.getX(), p2.getX());
+        int maxX = Math.max(p1.getX(), p2.getX());
+        int minY = Math.min(p1.getY(), p2.getY());
+        int maxY = Math.max(p1.getY(), p2.getY());
+        for (int i=minX; i<=maxX; i++) {
+            for (int j=minY; j<=maxY; j++) {
+                setPixel(i,j,color);
+            }
+        }
     }
 
     @Override

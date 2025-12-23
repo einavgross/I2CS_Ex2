@@ -74,7 +74,7 @@ public class MapTest {
      * a simple test for getWidth and getHeight functions
      */
     @Test
-    public void getMapWidAndHightTest() {
+    public void getMapWidAndHeightTest() {
         Map2D m1 = new Map(1);
         assertEquals(1,m1.getWidth());
         assertEquals(1,m1.getHeight());
@@ -119,14 +119,28 @@ public class MapTest {
     }
 
     /**
-     * tests setPixel function - checks if the pixel have changed and the others remained the same
+     * tests setPixel function - set with x,y,v -  checks if the pixel have changed and the others remained the same
      */
     @Test
-    public void testSetGetPixel() {
+    public void testSetGetPixelFromXYV() {
         Map m = new Map(8, 8, 3);
         m.setPixel(2, 3, 100);
         assertEquals(100, m.getPixel(2, 3));
         assertEquals(3, m.getPixel(0, 5));
+    }
+
+    /**
+     * tests setPixel function - set with x,y,v -  checks if the pixel have changed and the others remained the same
+     */
+    @Test
+    public void testSetGetPixelFromPV() {
+        Map2D m = new Map(45);
+        Pixel2D p = new Index2D(30,30);
+        Pixel2D p2 = new Index2D(20,20);
+        m.setPixel(p,8);
+        assertEquals(8, m.getPixel(p));
+        assertEquals(0, m.getPixel(p2));
+
     }
 
     /**
@@ -157,6 +171,142 @@ public class MapTest {
         assertTrue(m1.sameDimensions(m2));
         assertTrue(m1.sameDimensions(m3));
         assertFalse(m1.sameDimensions(m4));
+    }
+
+    /**
+     * tests addMap2D function - checks if the map of a manual sum is equal to the function result
+     */
+    @Test
+    public void testAddMap2D() {
+        Map2D m = new Map(4,4,3);
+        Map2D m2 = new Map(4,4,1);
+        Map2D m3 = new Map(4,4,4);
+        m.addMap2D(m2);
+        assertArrayEquals(m3.getMap(),m.getMap());
+    }
+
+    /**
+     * test if addMap2D is symmetrical - m1+m2 = m4 (copy of m2) + m3 (copy of m1)
+     */
+    @Test
+    public void testIfAddSymmetric() {
+        Map2D m1 = new Map(5,6,3);
+        Map2D m2 = new Map(5,6,1);
+        Map2D m3 = new Map(m1.getMap());
+        Map2D m4 = new Map(m2.getMap());
+        m1.addMap2D(m2); //m1+m2
+        m4.addMap2D(m3); //m2+m1
+        assertArrayEquals(m1.getMap(),m4.getMap());
+    }
+
+    /**
+     * tests mul by scalar function - checks if multiplying the map by scalar 0.0 returns a map with all zeros
+     */
+    @Test
+    public void testMulBy0() {
+        Map2D m1 = new Map(5,9,2);
+        Map2D m2 = new Map(5,9,0);
+        double scalar = 0.0;
+        m1.mul(scalar);
+        assertArrayEquals(m1.getMap(),m2.getMap());
+    }
+    /**
+     * tests mul by scalar function - checks if multiplying the map by scalar 1.0 returns the same map
+     */
+    @Test
+    public void testMulBy1() {
+        Map2D m1 = new Map(5,6,3);
+        Map2D m2 = new Map(m1.getMap());
+        double scalar = 1.0;
+        m1.mul(scalar);
+        assertArrayEquals(m1.getMap(),m2.getMap());
+    }
+    /**
+     * tests mul by scalar function - checks if the map of a manual multiplication is equal to the function result
+     */
+    @Test
+    public void testMul() {
+        Map2D m1 = new Map(5,6,3);
+        Map2D m2 = new Map(5,6,15);
+        double scalar = 5.0;
+        m1.mul(scalar);
+        assertArrayEquals(m1.getMap(),m2.getMap());
+    }
+    /**
+     * tests mul by scalar function with a double result - check the casting of the scalar
+     */
+    @Test
+    public void testMulCasting() {
+        Map2D m1 = new Map(2,7,3);
+        double scalar = 7.4;
+        Map2D m2 = new Map(2,7,21);
+        m1.mul(scalar);
+        assertArrayEquals(m1.getMap(),m2.getMap());
+    }
+
+    /**
+     * test rescale function - checks that the width, height and pixels have changed properly
+     */
+    @Test
+    public void testRescaleSimple() {
+        int[][] data = {{1, 2},{3, 4},{5, 6}};
+        Map m = new Map(data);
+        m.rescale(2.0, 2.0);
+        assertEquals(6, m.getWidth());
+        assertEquals(4, m.getHeight());
+        assertEquals(6, m.getPixel(5, 3));
+        assertEquals(2, m.getPixel(0, 2));
+        assertEquals(1, m.getPixel(1, 1));
+    }
+
+    /**
+     * tests drawCircle function - checks if the function changes the color only for the pixels inside the circle
+     */
+    @Test
+    public void testDrawCircleSimple() {
+        int[][] data = new int[10][10];
+        Map m = new Map(data);
+        int color = 1;
+        Pixel2D center = new Index2D(5, 5);
+        double rad = 2.0;
+        m.drawCircle(center, rad, color);
+        assertEquals(color, m.getPixel(5, 5));
+        assertEquals(color, m.getPixel(5, 6));
+        assertEquals(0, m.getPixel(0, 0));
+        assertEquals(0, m.getPixel(5, 8));
+    }
+
+    /**
+     * tests drawRect function - checks if the function changes the color only for the pixels inside the rectangle
+     */
+    @Test
+    public void testDrawRect() {
+        Map m = new Map(7);
+        Pixel2D p1 = new Index2D(2, 2);
+        Pixel2D p2 = new Index2D(4, 4);
+        m.drawRect(p1, p2, 7);
+        assertEquals(7, m.getPixel(2, 2));
+        assertEquals(7, m.getPixel(4, 4));
+        assertEquals(7, m.getPixel(2, 4));
+        assertEquals(7, m.getPixel(3, 3));
+        assertEquals(0, m.getPixel(1, 1));
+        assertEquals(0, m.getPixel(5, 5));
+    }
+
+    /**
+     * tests drawLine function - checks if the function changes the color only for the pixels on the line between the given points
+     */
+    @Test
+    public void testDrawLine() {
+        int[][] data = new int[10][10];
+        Map m = new Map(data);
+        m.drawLine(new Index2D(1, 1), new Index2D(5, 1), 3);
+        for (int x = 1; x <= 5; x++) {assertEquals(3, m.getPixel(x, 1));}
+        assertEquals(0, m.getPixel(1, 2));
+        m.drawLine(new Index2D(0, 0), new Index2D(4, 2), 5);
+        assertEquals(5, m.getPixel(0, 0));
+        assertEquals(5, m.getPixel(4, 2));
+        assertEquals(5, m.getPixel(2, 1));
     }
 
     /*private int[][] _map_3_3 = {{0,1,0}, {1,0,1}, {0,1,0}};
