@@ -309,31 +309,15 @@ public class MapTest {
         assertEquals(5, m.getPixel(2, 1));
     }
 
-    /*private int[][] _map_3_3 = {{0,1,0}, {1,0,1}, {0,1,0}};
-    private Map2D _m0,_m1,_m3_3;
-
-    @BeforeEach
-    public void setup() {
-        _m0 = new Map(2);
-        _m3_3 = new Map(_map_3_3);
-        _m1 = new Map(1);
-    }
-
-    @Test
-    @Timeout(value = 1, unit = SECONDS)
-    void init () {
-        int[][] big_arr = new int[500][500];
-        _m1.init(big_arr);
-        assertEquals(big_arr.length, _m1.getWidth());
-        assertEquals(big_arr[0].length, _m1.getHeight());
-        Pixel2D p1 = new Index2D(3, 2);
-        _m1.fill(p1, 1, true);
-    }
+    /**
+     * test equals function - checks if the function return true for 2 identical maps and false for 2 different maps
+     */
     @Test
     void testEquals() {
-        assertEquals(_m0,_m1);
-        _m0.init(_map_3_3);
-        _m1.init(_map_3_3);
-        assertEquals(_m0,_m1);
-    }*/
+        Map2D m1 = new Map(6,10,2);
+        Map2D m2 = new Map(2,5,8);
+        assertFalse(m1.equals(m2));
+        m2.init(6,10,2);
+        assertTrue(m1.equals(m2));
+    }
 }

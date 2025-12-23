@@ -201,7 +201,20 @@ public class Map implements Map2D, Serializable{
     @Override
     public boolean equals(Object ob) {
         boolean ans = false;
-
+        if (ob!=null) {
+            if (ob instanceof Map m) {
+                if (sameDimensions(m)) {
+                    ans = true;
+                    for (int i = 0; i < getWidth() && ans; i++) {
+                        for (int j = 0; j < getHeight() && ans; j++) {
+                            if (m.getPixel(i, j) != getPixel(i, j)) {
+                                ans = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return ans;
     }
 	@Override
