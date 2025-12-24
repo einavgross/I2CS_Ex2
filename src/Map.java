@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.LinkedList;
+
 /**
  * This class represents a 2D map (int[w][h]) as a "screen" or a raster matrix or maze over integers.
  * This is the main class needed to be implemented.
@@ -223,8 +225,57 @@ public class Map implements Map2D, Serializable{
 	 * https://en.wikipedia.org/wiki/Flood_fill
 	 */
 	public int fill(Pixel2D xy, int new_v,  boolean cyclic) {
-		int ans = -1;
-
+		int ans = 0;
+        if (xy != null) {
+            int oldColor = getPixel(xy);
+            if (oldColor != new_v) {
+                LinkedList<Pixel2D> q = new LinkedList<Pixel2D>();
+                q.add(xy);
+                while (!q.isEmpty()) {
+                    Pixel2D c = q.poll();
+                    if (getPixel(c) == oldColor) {
+                        setPixel(c, new_v);
+                        ans++;
+                        if (!cyclic) {
+                            Pixel2D up = new Index2D(c.getX(), c.getY() + 1);
+                            if (isInside(up) && getPixel(up) != new_v && getPixel(up) == oldColor) {
+                                q.add(up);
+                            }
+                            Pixel2D down = new Index2D(c.getX(), c.getY() - 1);
+                            if (isInside(down) && getPixel(down) != new_v && getPixel(down) == oldColor) {
+                                q.add(down);
+                            }
+                            Pixel2D left = new Index2D(c.getX() - 1, c.getY());
+                            if (isInside(left) && getPixel(left) != new_v && getPixel(left) == oldColor) {
+                                q.add(left);
+                            }
+                            Pixel2D right = new Index2D(c.getX() + 1, c.getY());
+                            if (isInside(right) && getPixel(right) != new_v && getPixel(right) == oldColor) {
+                                q.add(right);
+                            }
+                        }
+                        if (cyclic) {
+                            Pixel2D up = new Index2D(c.getX(), (c.getY() + (getHeight() - 1)) % getHeight());
+                            if (getPixel(up) != new_v && getPixel(up) == oldColor) {
+                                q.add(up);
+                            }
+                            Pixel2D down = new Index2D(c.getX(), (c.getY() + 1) % getHeight());
+                            if (getPixel(down) != new_v && getPixel(down) == oldColor) {
+                                q.add(down);
+                            }
+                            Pixel2D left = new Index2D((c.getX() + (getWidth() - 1)) % getWidth(), c.getY());
+                            if (getPixel(left) != new_v && getPixel(left) == oldColor) {
+                                q.add(left);
+                            }
+                            Pixel2D right = new Index2D((c.getX() + 1) % getWidth(), c.getY());
+                            if (getPixel(right) != new_v && getPixel(right) == oldColor) {
+                                q.add(right);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 		return ans;
 	}
 
@@ -234,16 +285,127 @@ public class Map implements Map2D, Serializable{
 	 * https://en.wikipedia.org/wiki/Breadth-first_search
 	 */
 	public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
-		Pixel2D[] ans = null;  // the result.
+        Pixel2D[] ans = null;
+        Map2D distanceMap = allDistance(p1, obsColor, cyclic);
+        if (distanceMap.getPixel(p2) != -1 && distanceMap.getPixel(p2) != -obsColor) {
+            ans = new Pixel2D[distanceMap.getPixel(p2) + 1];
+            Pixel2D c = p2;
+            for (int i = ans.length - 1; i >= 0; i--) {
+                ans[i] = c;
+                if (i > 0) {
+                    if (!cyclic) {
+                        Pixel2D up = new Index2D(c.getX(), c.getY() + 1);
+                        if (isInside(up) && distanceMap.getPixel(c) == distanceMap.getPixel(up) + 1) {
+                            c=up;
+                            continue;
+                        }
+                        Pixel2D down = new Index2D(c.getX(), c.getY() - 1);
+                        if (isInside(down) && distanceMap.getPixel(c) == distanceMap.getPixel(down) + 1) {
+                            c=down;
+                            continue;
+                        }
+                        Pixel2D left = new Index2D(c.getX() - 1, c.getY());
+                        if (isInside(left) && distanceMap.getPixel(c) == distanceMap.getPixel(left) + 1) {
+                            c=left;
+                            continue;
+                        }
+                        Pixel2D right = new Index2D(c.getX() + 1, c.getY());
+                        if (isInside(right) && distanceMap.getPixel(c) == distanceMap.getPixel(right) + 1) {
+                            c=right;
+                            continue;
+                        }
+                    }
+                    if (cyclic) {
+                        Pixel2D up = new Index2D(c.getX(), (c.getY() + (getHeight() - 1)) % getHeight());
+                        if (distanceMap.getPixel(c) == distanceMap.getPixel(up) + 1) {
+                            c=up;
+                            continue;
+                        }
+                        Pixel2D down = new Index2D(c.getX(), (c.getY() + 1) % getHeight());
+                        if (distanceMap.getPixel(c) == distanceMap.getPixel(down) + 1) {
+                            c=down;
+                            continue;
+                        }
+                        Pixel2D left = new Index2D((c.getX() + (getWidth() - 1)) % getWidth(), c.getY());
+                        if (distanceMap.getPixel(c) == distanceMap.getPixel(left) + 1) {
+                            c=left;
+                            continue;
+                        }
+                        Pixel2D right = new Index2D((c.getX() + 1) % getWidth(), c.getY());
+                        if (distanceMap.getPixel(c) == distanceMap.getPixel(right) + 1) {
+                            c=right;
+                        }
+                    }
+                }
+            }
+        }
+    return ans;
+    }
 
-		return ans;
-	}
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
-        Map2D ans = null;  // the result.
-
+        Map2D ans = null;
+        if (start != null && getPixel(start)!=obsColor && isInside(start))
+        {
+            ans = new Map(this.getMap());
+            for (int i=0; i<getWidth(); i++) {
+                for (int j=0; j<getHeight(); j++) {
+                    ans.getMap()[i][j]=-1;
+                }
+            }
+            LinkedList<Pixel2D> q = new LinkedList<>();
+            q.add(start);
+            ans.setPixel(start, 0);
+            while (!q.isEmpty()) {
+                Pixel2D c = q.poll();
+                if (getPixel(c) != obsColor) {
+                    if (!cyclic) {
+                        Pixel2D up = new Index2D(c.getX(), c.getY() + 1);
+                        if (isInside(up) && getPixel(up) != obsColor && ans.getPixel(up) == -1) {
+                            ans.setPixel(up, ans.getPixel(c) + 1);
+                            q.add(up);
+                        }
+                        Pixel2D down = new Index2D(c.getX(), c.getY() - 1);
+                        if (isInside(down) && getPixel(down) != obsColor && ans.getPixel(down) == -1) {
+                            ans.setPixel(down, ans.getPixel(c) + 1);
+                            q.add(down);
+                        }
+                        Pixel2D left = new Index2D(c.getX() - 1, c.getY());
+                        if (isInside(left) && getPixel(left) != obsColor && ans.getPixel(left) == -1) {
+                            ans.setPixel(left, ans.getPixel(c) + 1);
+                            q.add(left);
+                        }
+                        Pixel2D right = new Index2D(c.getX() + 1, c.getY());
+                        if (isInside(right) && getPixel(right) != obsColor && ans.getPixel(right) == -1) {
+                            ans.setPixel(right, ans.getPixel(c) + 1);
+                            q.add(right);
+                        }
+                    }
+                    if (cyclic) {
+                        Pixel2D up = new Index2D(c.getX(), (c.getY() + (getHeight() - 1)) % getHeight());
+                        if (getPixel(up) != obsColor && ans.getPixel(up) == -1) {
+                            ans.setPixel(up, ans.getPixel(c) + 1);
+                            q.add(up);
+                        }
+                        Pixel2D down = new Index2D(c.getX(), (c.getY() + 1) % getHeight());
+                        if (getPixel(down) != obsColor && ans.getPixel(down) == -1) {
+                            ans.setPixel(down, ans.getPixel(c) + 1);
+                            q.add(down);
+                        }
+                        Pixel2D left = new Index2D((c.getX() + (getWidth() - 1)) % getWidth(), c.getY());
+                        if (getPixel(left) != obsColor && ans.getPixel(left) == -1) {
+                            ans.setPixel(left, ans.getPixel(c) + 1);
+                            q.add(left);
+                        }
+                        Pixel2D right = new Index2D((c.getX() + 1) % getWidth(), c.getY());
+                        if (getPixel(right) != obsColor && ans.getPixel(right) == -1) {
+                            ans.setPixel(right, ans.getPixel(c) + 1);
+                            q.add(right);
+                        }
+                    }
+                }
+            }
+        }
         return ans;
     }
-	////////////////////// Private Methods ///////////////////////
-
 }

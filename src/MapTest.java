@@ -6,16 +6,17 @@ import static org.junit.jupiter.api.Assertions.*;
  * this is a tests class for the 2D map class
  */
 public class MapTest {
-    /**\
+    /**
+     * \
      * tests constructor from 3 values
      */
     @Test
     public void testInitFrom3V() {
-        Map2D m = new Map(3,7,1);
-        assertEquals(3,m.getWidth());
-        assertEquals(7,m.getHeight());
-        assertEquals(1,m.getPixel(2,6));
-        assertEquals(1,m.getPixel(1,4));
+        Map2D m = new Map(3, 7, 1);
+        assertEquals(3, m.getWidth());
+        assertEquals(7, m.getHeight());
+        assertEquals(1, m.getPixel(2, 6));
+        assertEquals(1, m.getPixel(1, 4));
     }
 
     /**
@@ -23,13 +24,13 @@ public class MapTest {
      */
     @Test
     public void testInitFromArray() {
-        int[][] m = {{1,2,3},{4,5,6},{7,8,9}};
+        int[][] m = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         Map2D m2 = new Map(m);
-        assertEquals(m.length,m2.getWidth());
-        assertEquals(m[0].length,m2.getHeight());
-        assertEquals(5,m2.getPixel(1,1));
-        assertEquals(3,m2.getPixel(0,2));
-        assertEquals(m[1][0],m2.getPixel(1,0));
+        assertEquals(m.length, m2.getWidth());
+        assertEquals(m[0].length, m2.getHeight());
+        assertEquals(5, m2.getPixel(1, 1));
+        assertEquals(3, m2.getPixel(0, 2));
+        assertEquals(m[1][0], m2.getPixel(1, 0));
     }
 
     /**
@@ -37,9 +38,9 @@ public class MapTest {
      */
     @Test
     public void getMapTest() {
-        int [][] m1= {{1,2,3},{4,5,6},{7,8,9}};
+        int[][] m1 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         Map2D m2 = new Map(m1);
-        assertArrayEquals(m1,m2.getMap());
+        assertArrayEquals(m1, m2.getMap());
     }
 
     /**
@@ -51,23 +52,25 @@ public class MapTest {
         int[][] m2 = {{2, 2}, {2, 2}};
         assertArrayEquals(m2, m1.getMap());
     }
+
     /**
      * tests getMap function for a single object with zeros
      */
     @Test
     public void getMapTest2() {
-        int [][] m1= {{0,0,0}};
+        int[][] m1 = {{0, 0, 0}};
         Map2D m2 = new Map(m1);
-        assertArrayEquals(m1,m2.getMap());
+        assertArrayEquals(m1, m2.getMap());
     }
+
     /**
      * test getMap for a big array
      */
     @Test
     public void getMapTestBig() {
-        int [][] m1= new int[1000][1000];
+        int[][] m1 = new int[1000][1000];
         Map2D m2 = new Map(m1);
-        assertArrayEquals(m1,m2.getMap());
+        assertArrayEquals(m1, m2.getMap());
     }
 
     /**
@@ -76,8 +79,8 @@ public class MapTest {
     @Test
     public void getMapWidAndHeightTest() {
         Map2D m1 = new Map(1);
-        assertEquals(1,m1.getWidth());
-        assertEquals(1,m1.getHeight());
+        assertEquals(1, m1.getWidth());
+        assertEquals(1, m1.getHeight());
     }
 
     /**
@@ -85,15 +88,15 @@ public class MapTest {
      */
     @Test
     public void getWidthAndHeightTestBig() {
-        Map2D m1 = new Map(1000,1,0);
-        assertEquals(1000,m1.getWidth());
-        assertEquals(1,m1.getHeight());
-        Map2D m2 = new Map(1,1000,0);
-        assertEquals(1,m2.getWidth());
-        assertEquals(1000,m2.getHeight());
-        Map2D m3 = new Map(2000,2000,0);
-        assertEquals(2000,m3.getWidth());
-        assertEquals(2000,m3.getHeight());
+        Map2D m1 = new Map(1000, 1, 0);
+        assertEquals(1000, m1.getWidth());
+        assertEquals(1, m1.getHeight());
+        Map2D m2 = new Map(1, 1000, 0);
+        assertEquals(1, m2.getWidth());
+        assertEquals(1000, m2.getHeight());
+        Map2D m3 = new Map(2000, 2000, 0);
+        assertEquals(2000, m3.getWidth());
+        assertEquals(2000, m3.getHeight());
     }
 
     /**
@@ -135,9 +138,9 @@ public class MapTest {
     @Test
     public void testSetGetPixelFromPV() {
         Map2D m = new Map(45);
-        Pixel2D p = new Index2D(30,30);
-        Pixel2D p2 = new Index2D(20,20);
-        m.setPixel(p,8);
+        Pixel2D p = new Index2D(30, 30);
+        Pixel2D p2 = new Index2D(20, 20);
+        m.setPixel(p, 8);
         assertEquals(8, m.getPixel(p));
         assertEquals(0, m.getPixel(p2));
 
@@ -178,11 +181,11 @@ public class MapTest {
      */
     @Test
     public void testAddMap2D() {
-        Map2D m = new Map(4,4,3);
-        Map2D m2 = new Map(4,4,1);
-        Map2D m3 = new Map(4,4,4);
+        Map2D m = new Map(4, 4, 3);
+        Map2D m2 = new Map(4, 4, 1);
+        Map2D m3 = new Map(4, 4, 4);
         m.addMap2D(m2);
-        assertArrayEquals(m3.getMap(),m.getMap());
+        assertArrayEquals(m3.getMap(), m.getMap());
     }
 
     /**
@@ -190,13 +193,13 @@ public class MapTest {
      */
     @Test
     public void testIfAddSymmetric() {
-        Map2D m1 = new Map(5,6,3);
-        Map2D m2 = new Map(5,6,1);
+        Map2D m1 = new Map(5, 6, 3);
+        Map2D m2 = new Map(5, 6, 1);
         Map2D m3 = new Map(m1.getMap());
         Map2D m4 = new Map(m2.getMap());
         m1.addMap2D(m2); //m1+m2
         m4.addMap2D(m3); //m2+m1
-        assertArrayEquals(m1.getMap(),m4.getMap());
+        assertArrayEquals(m1.getMap(), m4.getMap());
     }
 
     /**
@@ -204,44 +207,47 @@ public class MapTest {
      */
     @Test
     public void testMulBy0() {
-        Map2D m1 = new Map(5,9,2);
-        Map2D m2 = new Map(5,9,0);
+        Map2D m1 = new Map(5, 9, 2);
+        Map2D m2 = new Map(5, 9, 0);
         double scalar = 0.0;
         m1.mul(scalar);
-        assertArrayEquals(m1.getMap(),m2.getMap());
+        assertArrayEquals(m1.getMap(), m2.getMap());
     }
+
     /**
      * tests mul by scalar function - checks if multiplying the map by scalar 1.0 returns the same map
      */
     @Test
     public void testMulBy1() {
-        Map2D m1 = new Map(5,6,3);
+        Map2D m1 = new Map(5, 6, 3);
         Map2D m2 = new Map(m1.getMap());
         double scalar = 1.0;
         m1.mul(scalar);
-        assertArrayEquals(m1.getMap(),m2.getMap());
+        assertArrayEquals(m1.getMap(), m2.getMap());
     }
+
     /**
      * tests mul by scalar function - checks if the map of a manual multiplication is equal to the function result
      */
     @Test
     public void testMul() {
-        Map2D m1 = new Map(5,6,3);
-        Map2D m2 = new Map(5,6,15);
+        Map2D m1 = new Map(5, 6, 3);
+        Map2D m2 = new Map(5, 6, 15);
         double scalar = 5.0;
         m1.mul(scalar);
-        assertArrayEquals(m1.getMap(),m2.getMap());
+        assertArrayEquals(m1.getMap(), m2.getMap());
     }
+
     /**
      * tests mul by scalar function with a double result - check the casting of the scalar
      */
     @Test
     public void testMulCasting() {
-        Map2D m1 = new Map(2,7,3);
+        Map2D m1 = new Map(2, 7, 3);
         double scalar = 7.4;
-        Map2D m2 = new Map(2,7,21);
+        Map2D m2 = new Map(2, 7, 21);
         m1.mul(scalar);
-        assertArrayEquals(m1.getMap(),m2.getMap());
+        assertArrayEquals(m1.getMap(), m2.getMap());
     }
 
     /**
@@ -249,7 +255,7 @@ public class MapTest {
      */
     @Test
     public void testRescaleSimple() {
-        int[][] data = {{1, 2},{3, 4},{5, 6}};
+        int[][] data = {{1, 2}, {3, 4}, {5, 6}};
         Map m = new Map(data);
         m.rescale(2.0, 2.0);
         assertEquals(6, m.getWidth());
@@ -301,7 +307,9 @@ public class MapTest {
         int[][] data = new int[10][10];
         Map m = new Map(data);
         m.drawLine(new Index2D(1, 1), new Index2D(5, 1), 3);
-        for (int x = 1; x <= 5; x++) {assertEquals(3, m.getPixel(x, 1));}
+        for (int x = 1; x <= 5; x++) {
+            assertEquals(3, m.getPixel(x, 1));
+        }
         assertEquals(0, m.getPixel(1, 2));
         m.drawLine(new Index2D(0, 0), new Index2D(4, 2), 5);
         assertEquals(5, m.getPixel(0, 0));
@@ -314,10 +322,226 @@ public class MapTest {
      */
     @Test
     void testEquals() {
-        Map2D m1 = new Map(6,10,2);
-        Map2D m2 = new Map(2,5,8);
+        Map2D m1 = new Map(6, 10, 2);
+        Map2D m2 = new Map(2, 5, 8);
         assertFalse(m1.equals(m2));
-        m2.init(6,10,2);
+        m2.init(6, 10, 2);
         assertTrue(m1.equals(m2));
     }
+
+    /**
+     * test fill function - checks if all the pixels have changed to new color
+     */
+    @Test
+    public void testFillSimple() {
+        Map2D map = new Map(7, 5, 0);
+        Pixel2D start = new Index2D(0, 1);
+        int pixelsColored = map.fill(start, 1,false);
+        assertEquals(35, pixelsColored);
+        assertEquals(1, map.getPixel(0, 0));
+    }
+
+    /**
+     * test the function with obstacles - checks if change the color of the right pixels (and not the obstacles)
+     */
+    @Test
+    public void testFillWithObstacle() {
+        Map2D map = new Map(4);
+        map.setPixel(1, 1, 2);
+        map.setPixel(2, 1, 2);
+        map.setPixel(3, 1, 2);
+        map.setPixel(1, 2, 2);
+        Pixel2D start = new Index2D(0, 0);
+        int pixelsColored = map.fill(start, 3, false);
+        assertEquals(12, pixelsColored);
+        assertEquals(2, map.getPixel(1, 2));
+    }
+
+    /**
+     * test if the function coloring the right pixels and not coloring the wrong wronged (empty or obstacles)
+     */
+    @Test
+    public void testFillWithObstacle2() {
+        Map2D map = new Map(3);
+        map.setPixel(0, 1, 2);
+        map.setPixel(1, 1, 2);
+        map.setPixel(2, 1, 2);
+        Pixel2D start = new Index2D(2, 0);
+        int pixelsColored = map.fill(start, 3, false);
+        assertEquals(3, pixelsColored);
+        assertEquals(0, map.getPixel(2, 2));
+    }
+
+    /**
+     * tests fill function with a cycle map - checks if the pixels at the edges have changed except the middle
+     */
+    @Test
+    public void testFillWithObstacleCycle() {
+        Map2D map = new Map(3);
+        map.setPixel(1, 0, 2);
+        map.setPixel(0, 1, 2);
+        map.setPixel(2, 1, 2);
+        map.setPixel(1, 2, 2);
+        Pixel2D start = new Index2D(0, 0);
+        int pixelsColored = map.fill(start, 3, true);
+        assertEquals(4, pixelsColored);
+        assertEquals(3, map.getPixel(2, 0));
+        assertEquals(3, map.getPixel(0, 2));
+        assertEquals(3, map.getPixel(2, 2));
+        assertEquals(0, map.getPixel(1, 1));
+    }
+
+    /**
+     * test that the function does not run for the same color (0 points has changed)
+     */
+    @Test
+    public void testFillSameColor() {
+        Map2D map = new Map(3, 3, 0);
+        int pixelsColored = map.fill(new Index2D(1, 1), 0,true);
+        assertEquals(0, pixelsColored);
+    }
+    /**
+     * tests allDistances function - checks that the map was created properly and the pixels contains the right distance
+     */
+    @Test
+    public void testAllDistancesSimple() {
+        Map2D map = new Map(5, 8, 0);
+        Map2D res = map.allDistance(new Index2D(0, 0), 1, false);
+        assertEquals(0, res.getPixel(0, 0));
+        assertEquals(4, res.getPixel(4, 0));
+        assertEquals(7, res.getPixel(0, 7));
+        assertEquals(11, res.getPixel(4, 7));
+        try {
+            res.getPixel(7, 4);
+            fail();
+        }
+        catch (Exception e) {
+        }
+    }
+    /**
+     * tests allDistances function with obstacles - checks if changed the distance of the right pixels (and not the obstacles)
+     * this test also checks if the distance got through the obstacle and went behind them
+     */
+    @Test
+    public void testObstacleAvoidanceLargeNonSquare() {
+        Map2D map = new Map(10, 4, 0);
+        map.setPixel(3, 0, 1);
+        map.setPixel(3, 1, 1);
+        map.setPixel(3, 2, 1);
+        Map2D res = map.allDistance(new Index2D(0, 0), 1, false);
+        assertEquals(-1, res.getPixel(3, 0));
+        assertEquals(-1, res.getPixel(3, 2));
+        assertEquals(6, res.getPixel(3, 3));
+        assertEquals(11, res.getPixel(5, 0));
+        assertTrue(res.getPixel(5, 0) > 5);
+    }
+
+    /**
+     * tests allDistances function with a cyclic map - checks that the pixels at the edges contains the right distance
+     */
+    @Test
+    public void testAllDistancesCyclic() {
+        Map2D map = new Map(10, 10, 0);
+        Map2D res = map.allDistance(new Index2D(0, 0), 1, true);
+        assertEquals(1, res.getPixel(9, 0));
+        assertEquals(1, res.getPixel(0, 9));
+    }
+
+    /**
+     * test that AllDistance function returns null when starting from a wall and fails when starting from a pixel outside
+     */
+    @Test
+    public void testAllDistanceInvalidStart() {
+        Map2D map = new Map(3, 3, 0);
+        map.setPixel(1, 1, 1);
+        Map2D resFromObstacle = map.allDistance(new Index2D(1, 1), 1, false);
+        assertNull(resFromObstacle);
+        try {
+            map.allDistance(new Index2D(5, 5), 1, false);
+            fail();
+        }
+        catch (Exception e) {
+        };
+    }
+
+    /**
+     * test shortestPath function - checks that the path length is correct and p1 and p2 are the first and last in the array
+     * this test also checks that the points are in the array are adjacent neighbors
+     */
+    @Test
+    public void testShortestPathSimple() {
+        Map2D map = new Map(10, 5, 0);
+        Pixel2D p1 = new Index2D(0, 0);
+        Pixel2D p2 = new Index2D(4, 3);
+        Pixel2D[] path = map.shortestPath(p1, p2, 1, false);
+        assertEquals(8, path.length);
+        assertEquals(p1, path[0]);
+        assertEquals(p2, path[path.length - 1]);
+        for (int i = 0; i < path.length - 1; i++) {
+            int dx = Math.abs(path[i].getX() - path[i+1].getX());
+            int dy = Math.abs(path[i].getY() - path[i+1].getY());
+            assertEquals(1, (dx + dy));
+        }
+    }
+
+    /**
+     * test shortestPath function with obstacles - checks that the path pass the obstacle
+     */
+    @Test
+    public void testPathWithObstacle() {
+        Map2D map = new Map(10, 5, 0);
+        Pixel2D p1 = new Index2D(0, 0);
+        Pixel2D p2 = new Index2D(4, 0);
+        for (int y = 0; y < 4; y++) {
+            map.setPixel(2, y, 1);
+        }
+        Pixel2D[] path = map.shortestPath(p1, p2, 1, false);
+        assertNotNull(path);
+        for (int i = 0;i<path.length;i++) {
+            assertNotEquals(1, map.getPixel(path[i]));
+        }
+        boolean passedThroughOpening = false;
+        for (int i = 0;i<path.length;i++) {
+            if (path[i].getX() == 2 && path[i].getY() == 4) passedThroughOpening = true;
+        }
+        assertTrue(passedThroughOpening);
+    }
+
+    /**
+     * test shortPath funciton for a cyclic map
+     */
+    @Test
+    public void testCyclicShortestPath() {
+        Map2D map = new Map(10, 5, 0);
+        Pixel2D p1 = new Index2D(0, 2);
+        Pixel2D p2 = new Index2D(9, 2);
+        Pixel2D[] path = map.shortestPath(p1, p2, 1, true);
+        assertNotNull(path);
+        assertEquals(2, path.length);
+        assertEquals(p1, path[0]);
+        assertEquals(p2, path[1]);
+    }
+    @Test
+    public void testShortestPathWhenNoPath() {
+        Map2D map = new Map(5, 5, 0);
+        Pixel2D p1 = new Index2D(0, 0);
+        Pixel2D p2 = new Index2D(4, 4);
+        map.setPixel(0, 1, 1);
+        map.setPixel(1, 0, 1);
+        map.setPixel(1, 1, 1);
+        assertNull(map.shortestPath(p1, p2, 1, false));
+    }
+
+    /**
+     * test that shortestPath returns null when p2 is an obstacle
+     */
+    @Test
+    public void testShortestPathObstacleP2() {
+        Map2D map = new Map(5, 5, 0);
+        Pixel2D p1 = new Index2D(0, 0);
+        Pixel2D p2 = new Index2D(2, 2);
+        map.setPixel(2, 2, 1);
+        assertNull(map.shortestPath(p1, p2, 1, false));
+    }
+
 }

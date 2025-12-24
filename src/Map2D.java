@@ -181,7 +181,6 @@ public int fill(Pixel2D p, int new_v, boolean cyclic);
  * @return the shortest path as an array of consecutive pixels, if none - returns null.
  */
 public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic);
-
 /**
  * Compute a new map (with the same dimension as this map) with the
  * shortest path distance (obstacle avoiding) from the start point.
