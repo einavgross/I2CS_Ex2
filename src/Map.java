@@ -33,6 +33,13 @@ public class Map implements Map2D, Serializable{
 	public Map(int[][] data) {
 		init(data);
 	}
+
+    /**
+     * Initializes the map (2D array) with dimensions w by h and fills all cells with the value v.
+     * @param w the width of the map.
+     * @param h the height of the map.
+     * @param v the init value of all the entries in the map.
+     */
 	@Override
 	public void init(int w, int h, int v) {
         _map = new int[w][h];
@@ -42,6 +49,11 @@ public class Map implements Map2D, Serializable{
             }
         }
     }
+
+    /**
+     * Initializes the map (2D array) from a given int 2D array
+     * @param arr a 2D int array.
+     */
 	@Override
 	public void init(int[][] arr) {
         if (arr != null) {
@@ -54,36 +66,63 @@ public class Map implements Map2D, Serializable{
                     }
                 }
             }
-        }
+    }
+
 	@Override
 	public int[][] getMap() {;
 		return _map;
 	}
+    /** Returns the width of the map*/
 	@Override
 	public int getWidth() {
         return _map.length;
     }
+    /** Returns the height of the map */
 	@Override
 	public int getHeight() {
         return _map[0].length;
     }
+
+    /**
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return the color value of the pixel at the coordinates x,y
+     */
 	@Override
 	public int getPixel(int x, int y) {
         return _map[x][y];
     }
+
+    /**
+     * @param p the pixel in the map
+     * @return the color value of the pixel at the given pixel p
+     */
 	@Override
 	public int getPixel(Pixel2D p) {
         return _map[p.getX()][p.getY()];
 	}
+
+    /**
+     * Sets the color value of the pixel at the specified coordinates
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param v the color that the entry at the coordinate [x][y] is set to.
+     */
 	@Override
 	public void setPixel(int x, int y, int v) {
         _map[x][y] = v;
     }
+
+    /**
+     * Sets the color value of the given pixel
+     * @param p the pixel in the map
+     * @param v the value that the entry at the coordinate [p.x][p.y] is set to
+     */
 	@Override
 	public void setPixel(Pixel2D p, int v) {
         _map[p.getX()][p.getY()] = v;
 	}
-
+    /** Checks if the given pixel coordinates are within the map boundaries. */
     @Override
     public boolean isInside(Pixel2D p) {
         boolean ans = false;
@@ -97,6 +136,11 @@ public class Map implements Map2D, Serializable{
         return ans;
     }
 
+    /**
+     * checks if a given map has the same dimensions - same width and height values - as this map
+     * @param p a given map2D
+     * @return true if this map and the given Map2D p have the same dimensions
+     */
     @Override
     public boolean sameDimensions(Map2D p) {
         boolean ans = false;
@@ -148,11 +192,13 @@ public class Map implements Map2D, Serializable{
         int maxX = Math.max(getWidth()-1,(int)(center.getX()+rad));
         int minY = (int)(center.getY()-rad);
         int maxY = (int)(center.getY()+rad);
-        for (int i=minX; i<maxX; i++) {
-            for (int j=minY; j<maxY; j++) {
+        for (int i=minX; i<=maxX; i++) {
+            for (int j=minY; j<=maxY; j++) {
                 Pixel2D p = new Index2D(i,j);
-                if (center.distance2D(p)<=rad) {
-                    setPixel(i,j,color);
+                if (isInside(p)) {
+                    if (center.distance2D(p) < rad) {
+                        setPixel(i, j, color);
+                    }
                 }
             }
         }
@@ -169,20 +215,24 @@ public class Map implements Map2D, Serializable{
                 return;
             }
             double m = (double)(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            double y = p1.getY();
             for (int i = p1.getX(); i <= p2.getX(); i++) {
-                double y = p1.getY() + m * (i - p1.getX());
                 setPixel(i, (int) Math.round(y), color);
+                y+=m;
             }
         }
-        if (dy>dx){ // קו עומד
-            if (p2.getY() < p1.getY()) {
-                drawLine(p2, p1, color);
-                return;
-            }
-            double m2 = (double)(p2.getX() - p1.getX()) / (p2.getY() - p1.getY());
-            for (int i = p1.getY(); i <= p2.getY(); i++) {
-                double x = p1.getX() + m2 * (i - p1.getY());
-                setPixel((int) Math.round(x), i, color);
+        else {
+            if (dy > dx) { // קו עומד
+                if (p2.getY() < p1.getY()) {
+                    drawLine(p2, p1, color);
+                    return;
+                }
+                double m2 = (double) (p2.getX() - p1.getX()) / (p2.getY() - p1.getY());
+                double x = p1.getX();
+                for (int i = p1.getY(); i <= p2.getY(); i++) {
+                    setPixel((int) Math.round(x), i, color);
+                    x += m2;
+                }
             }
         }
     }
