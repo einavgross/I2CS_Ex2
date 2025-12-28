@@ -164,7 +164,7 @@ import java.io.FileWriter;
             _p1 = null;
         }
         else if (action.contains("Save Map")) saveMap(map, "Map.txt");
-        else  if (action.equals("Load")) {
+        else  if (action.equals("Load Map")) {
             loadMap("Map.txt");
             Map2D temp = loadMap("Map.txt");
             if (temp != null) {
